@@ -24,8 +24,9 @@ def main():
     # separate packets by every 9000 and preface each packet with packet # and host IP
     fragment_size = 9000 
 
-    # iterate through the entirety of the data
-    num_fragments = int(len(data_packet)) / fragment_size
+    # iterate through the entirety of the data, account for off by 1 offset
+    num_fragments = (int(len(data_packet)) / fragment_size) + 1
+
     for i in range(int(num_fragments)):
 
         # convert the string message into a byte object
@@ -37,7 +38,7 @@ def main():
         print("message: %s" % MESSAGE)
 
         sock = socket.socket(socket.AF_INET, # Internet
-                            socket.SOCK_DGRAM) # UDP
+                           socket.SOCK_DGRAM) # UDP
         sock.sendto(MESSAGE, (UDP_IP, UDP_PORT))
 
 
