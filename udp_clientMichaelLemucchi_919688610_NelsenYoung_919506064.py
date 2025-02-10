@@ -1,11 +1,13 @@
 import socket
 
-HOST = "127.0.0.1"  # The server's hostname or IP address
-PORT = 65432  # The port used by the server
+UDP_IP = "127.0.0.1"
+UDP_PORT = 5005
+MESSAGE = b"Hello, World!"
 
-with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
-    s.connect((HOST, PORT))
-    s.sendall(b"Hello, world")
-    data = s.recv(1024)
+print("UDP target IP: %s" % UDP_IP)
+print("UDP target port: %s" % UDP_PORT)
+print("message: %s" % MESSAGE)
 
-print(f"Received {data!r}")
+sock = socket.socket(socket.AF_INET, # Internet
+                     socket.SOCK_DGRAM) # UDP
+sock.sendto(MESSAGE, (UDP_IP, UDP_PORT))
