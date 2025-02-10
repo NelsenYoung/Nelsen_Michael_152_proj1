@@ -14,8 +14,10 @@ def main():
     # combine time and payload data
     data_packet = str(curr) + random_payload
 
-    UDP_IP = "127.0.0.1"
-    UDP_PORT = 5005
+    UDP_IP = "127.0.0.1" # local host
+    UDP_PORT = 5005 # client request port
+    
+    # convert the string message into a byte object
     MESSAGE = data_packet.encode("utf-8")
 
 
