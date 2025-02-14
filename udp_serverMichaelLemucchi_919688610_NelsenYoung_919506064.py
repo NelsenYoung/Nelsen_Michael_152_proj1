@@ -80,10 +80,14 @@ def main():
             print("first packet recieved time: " + str(formatted_received_time_first) + " which is: " + str(time.ctime(formatted_received_time_first)))
             print("last packet received time: " + str(formatted_curr_time) + " which is: " + str(time.ctime(formatted_curr_time)))
             print("time difference: " + str(time_diff) + " seconds")
+            print("total bytes received: " + str(total_bytes_received) + " bytes")
 
             # calculate the throughput which is the total number of kilobytes sent divided by the time difference
             throughput = (total_bytes_received/1000) / time_diff
             print("throughput: " + str(throughput) + " kilobytes/second")
+
+            # send the throughput back to the client
+            sock.sendto(str(throughput).encode(), addr)
 
             
         # print out the payload as a byte object

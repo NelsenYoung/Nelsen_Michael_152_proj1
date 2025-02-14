@@ -57,6 +57,10 @@ def main():
                            socket.SOCK_DGRAM) # UDP
         sock.sendto(MESSAGE, (UDP_IP, UDP_PORT))
 
+    # recieve the throughput from the server
+    data, addr = sock.recvfrom(9216) # max buffer size set to 9216 bytes
+    print("throughput: " + str(data.decode()))
+
 
 # call the script
 if __name__ == "__main__":
