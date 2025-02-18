@@ -35,16 +35,30 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             # send data to server
             print("sending this to server: ")
             print(encoded_data)
+
+
+            encoded_data['server_port'] = SERVER_PORT
+
+
             encoded_data = json.dumps(encoded_data)
+
 
             encoded_data = encoded_data.encode('utf-8')
             
+    
             server_connection.sendall(encoded_data)
 
             # get response from server
             server_response = server_connection.recv(1024)
             
+            server_data = server_response.decode('utf-8')
+            server_jsonstring = json.loads(server_data)
+            print(server_jsonstring)
+            server_jsonstring['server_port'] = PORT
+            server_jsonstring = json.dumps(server_jsonstring)
+            server_payload = server_jsonstring.encode('utf-8')
+            
             # send data back to client
             print("sending this back to client: ")
-            print(server_response)
-            conn.sendall(server_response)
+            print(server_payload)
+            conn.sendall(server_payload)
