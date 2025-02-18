@@ -1,6 +1,5 @@
 import socket
-import json
-
+import 
 HOST = "127.0.0.1"  # Standard loopback interface address (localhost)
 PORT = 65432  # Port to listen on (non-privileged ports are > 1023)
 
@@ -17,7 +16,6 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 break
             
 
-            
             encoded_data = data.decode('utf-8')
             print(encoded_data)
             encoded_data = encoded_data.encode('utf-8')

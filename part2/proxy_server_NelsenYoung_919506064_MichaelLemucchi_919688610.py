@@ -1,33 +1,27 @@
 import socket
-import time
 
+HOST = "127.0.0.1"  # Standard loopback interface address (localhost)
+PORT = 65432  # Port to listen on (non-privileged ports are > 1023)
 
-def main():
-    # server IP and port to receive connections from 
-    UDP_IP = "127.0.0.1"
-    UDP_PORT = 5005
+with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+    s.bind((HOST, PORT))
+    s.listen()
+    conn, addr = s.accept()
+    with conn:
+        print(f"Connected by {addr}")
+        while True:
+            data = conn.recv(1024)
+            
+            if not data:
+                break
+            
+            
+            encoded_data = data.decode('utf-8')
+            if encoded_data['server_ip'] != "127.0.0.1":
+                print("Error")
+                break
 
-    # setup socket connection and bind to local host and port 5005
-    sock = socket.socket(socket.AF_INET, # Internet
-                        socket.SOCK_DGRAM) # UDP
-    sock.bind((UDP_IP, UDP_PORT))
+            print(encoded_data)
+            encoded_data = encoded_data.encode('utf-8')
 
-
-    # keep track of original sent time and received time
-    formatted_timestamp = 0.0
-    formatted_received_time_first = 0.0
-
-    # keep track of bytes received for throughput
-    total_bytes_received = 0 
-
-    while True:
-        # extract data from socket
-        data, addr = sock.recvfrom(9216) # max buffer size set to 9216 bytes
-
-        # convert the byte stream into a string
-        encoded_str = str(data.decode())
-
-
-# call the script
-if __name__ == "__main__":
-    main()
+            conn.sendall(encoded_data)
