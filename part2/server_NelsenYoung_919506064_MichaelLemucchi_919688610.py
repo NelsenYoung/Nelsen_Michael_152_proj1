@@ -17,7 +17,9 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 break
             
 
-            json_string = json.dumps(data)
-            encoded_data = json_string.encode('utf-8')
+            
+            encoded_data = data.decode('utf-8')
+            print(encoded_data)
+            encoded_data = encoded_data.encode('utf-8')
 
             conn.sendall(encoded_data)
