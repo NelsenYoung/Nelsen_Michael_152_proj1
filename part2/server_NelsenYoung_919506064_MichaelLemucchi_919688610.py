@@ -1,4 +1,5 @@
 import socket
+import json
 
 HOST = "127.0.0.1"  # Standard loopback interface address (localhost)
 PORT = 65432  # Port to listen on (non-privileged ports are > 1023)
@@ -11,6 +12,12 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         print(f"Connected by {addr}")
         while True:
             data = conn.recv(1024)
+            
             if not data:
                 break
-            conn.sendall(data)
+            
+
+            json_string = json.dumps(data)
+            encoded_data = json_string.encode('utf-8')
+
+            conn.sendall(encoded_data)
