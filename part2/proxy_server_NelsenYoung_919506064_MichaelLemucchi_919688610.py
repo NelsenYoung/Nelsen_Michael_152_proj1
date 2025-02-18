@@ -32,8 +32,10 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 
             # send data to server
             print(encoded_data)
-            encoded_data = encoded_data.encode('utf-8')
+            encoded_data = json.dumps(encoded_data)
 
+            encoded_data = encoded_data.encode('utf-8')
+            
             server_connection.sendall(encoded_data)
 
             # get response from server
