@@ -2,10 +2,10 @@ import socket
 import json
 
 HOST = "127.0.0.1"  # Standard loopback interface address (localhost)
-PORT = 12345  # Port to listen on (non-privileged ports are > 1023)
+PORT = 12345  # Port used by the client
+SERVER_PORT = 65432 # Port used by the server
 
-SERVER_PORT = 65432
-
+# Establish a socket connection with the client
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     s.bind((HOST, PORT))
     s.listen()
@@ -14,12 +14,13 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     with conn:
         print(f"Connected by {addr}")
         while True:
+            # Collect the data from the client
             data = conn.recv(1024)
             
             if not data:
                 break
             
-            
+            # decode the data and confirm its IP address
             encoded_data = data.decode('utf-8')
             encoded_data = json.loads(encoded_data)
 
@@ -36,21 +37,16 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             print("sending this to server: ")
             print(encoded_data)
 
-
+            # rename to the server port and send data to server
             encoded_data['server_port'] = SERVER_PORT
-
-
             encoded_data = json.dumps(encoded_data)
-
-
             encoded_data = encoded_data.encode('utf-8')
-            
-    
             server_connection.sendall(encoded_data)
 
             # get response from server
             server_response = server_connection.recv(1024)
             
+            # decode the server data, rename the port to the client port
             server_data = server_response.decode('utf-8')
             server_jsonstring = json.loads(server_data)
             print(server_jsonstring)

@@ -2,15 +2,18 @@ import socket
 import json
 
 HOST = "127.0.0.1"  # Standard loopback interface address (localhost)
-PORT = 65432  # Port to listen on (non-privileged ports are > 1023)
+PORT = 65432  # Port used by the server
 
+# create a socket connection for the server
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     s.bind((HOST, PORT))
     s.listen()
     conn, addr = s.accept()
+    # connect to the proxy to accept in information
     with conn:
         print(f"Connected by {addr}")
         while True:
+            # Data sent by the proxy to the server
             data = conn.recv(1024)
             
             if not data:
