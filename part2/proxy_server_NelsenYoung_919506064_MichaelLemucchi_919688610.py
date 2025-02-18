@@ -10,6 +10,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     s.bind((HOST, PORT))
     s.listen()
     conn, addr = s.accept()
+    server_connection = None
     with conn:
         print(f"Connected by {addr}")
         while True:
@@ -27,10 +28,12 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 break
 
             # establish connection with server
-            server_connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            server_connection.connect(((HOST, SERVER_PORT)))
+            if server_connection is None:
+                server_connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                server_connection.connect(((HOST, SERVER_PORT)))
 
             # send data to server
+            print("sending this to server: ")
             print(encoded_data)
             encoded_data = json.dumps(encoded_data)
 
@@ -42,4 +45,6 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             server_response = server_connection.recv(1024)
             
             # send data back to client
+            print("sending this back to client: ")
+            print(server_response)
             conn.sendall(server_response)
