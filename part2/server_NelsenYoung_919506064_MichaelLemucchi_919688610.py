@@ -19,12 +19,20 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             if not data:
                 break
             
+
             # Decode data and print
             decoded_data = data.decode('utf-8')
             print(decoded_data)
 
+
             # Modify message and send back to client
             json_string = json.loads(decoded_data)
+
+            # Confirm the server IP again
+            if json_string['server_ip'] == "127.0.0.1":
+                print("Host IP: 127.0.0.1")
+
+            
             new_message = "pong"
             json_string['message'] = new_message
 
